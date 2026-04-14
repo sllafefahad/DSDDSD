@@ -30,18 +30,18 @@
             position: relative;
         }
         .header h1 { font-size: 32px; font-weight: 900; }
-        
-        /* زر الأستاذ وزر الرجوع في نفس المكان */
-        .admin-btn, .back-btn {
+
+        /* أزرار فوق يسار */
+        .control-btn {
             position: absolute;
             top: 20px;
             left: 20px;
-            padding: 8px 18px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
-            font-size: 14px;
+            border-radius: 10px;
             font-weight: bold;
             cursor: pointer;
+            z-index: 100;
         }
         .admin-btn {
             background: #facc15;
@@ -50,9 +50,9 @@
         .back-btn {
             background: #ef4444;
             color: white;
-            display: none; /* مخفي في البداية */
+            display: none;   /* مخفي في البداية */
         }
-        
+
         .question-card {
             background: #f8fafc;
             padding: 25px;
@@ -87,7 +87,7 @@
             display: block;
             margin: 40px auto;
         }
-        
+
         /* Results */
         .results { display: none; padding: 40px; }
         .score-card {
@@ -100,7 +100,7 @@
         }
         .score { font-size: 72px; font-weight: 900; }
         .percentage { font-size: 28px; }
-        
+
         .review-table {
             width: 100%;
             border-collapse: collapse;
@@ -114,7 +114,7 @@
         .review-table th { background: #1e40af; color: white; }
         .correct { background: #d1fae5 !important; color: #166534; }
         .wrong { background: #fee2e2 !important; color: #991b1b; }
-        
+
         .restart-btn {
             background: #16a34a;
             color: white;
@@ -126,7 +126,7 @@
             display: block;
             margin: 30px auto 0;
         }
-        
+
         /* الحقوق */
         .marquee {
             background: linear-gradient(90deg, #1e3a8a, #3b82f6);
@@ -152,10 +152,10 @@
 <body>
     <div class="container">
         <!-- زر وضع الأستاذ -->
-        <button onclick="toggleAdmin()" id="adminBtn" class="admin-btn">👨‍🏫 الأستاذ</button>
+        <button onclick="toggleAdmin()" id="adminBtn" class="control-btn admin-btn">👨‍🏫 الأستاذ</button>
         
-        <!-- زر الرجوع لوضع الطالب (يظهر فقط في وضع الأستاذ) -->
-        <button onclick="exitAdminMode()" id="backBtn" class="back-btn">← رجوع لوضع الطالب</button>
+        <!-- زر الرجوع (يظهر في نفس المكان) -->
+        <button onclick="exitAdminMode()" id="backBtn" class="control-btn back-btn">← رجوع لوضع الطالب</button>
         
         <div class="header">
             <h1>اختبار الكفايات اللغوية 1-2</h1>
@@ -174,7 +174,7 @@
             <h2 style="text-align:center; color:#1e40af;">لوحة تحكم الأستاذ</h2>
             <div id="adminQuestions"></div>
             <div style="text-align:center; margin-top:30px;">
-                <button onclick="addNewQuestion()" style="background:#3b82f6;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">إضافة سؤال جديد</button>
+                <button onclick="addNewQuestion()" style="background:#3b82f6;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">إضافة سؤال</button>
                 <button onclick="saveQuestions()" style="background:#16a34a;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">حفظ التعديلات</button>
             </div>
         </div>
@@ -212,7 +212,7 @@
 
     <script>
         const ADMIN_PASSWORD = "554466";
-        let questions = JSON.parse(localStorage.getItem('kafayatQuiz')) || [ /* الـ20 سؤال كاملة هنا */ ];
+        let questions = JSON.parse(localStorage.getItem('kafayatQuiz')) || [ /* ضع الـ20 سؤال هنا */ ];
         let userAnswers = new Array(questions.length).fill(null);
 
         function toggleAdmin() {
@@ -292,7 +292,6 @@
             renderQuestions();
         }
 
-        // دوال وضع الأستاذ (مختصرة)
         function renderAdminPanel() {
             const container = document.getElementById('adminQuestions');
             container.innerHTML = '';
