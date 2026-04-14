@@ -27,7 +27,6 @@
             color: white;
             padding: 40px 20px;
             text-align: center;
-            position: relative;
         }
         .header h1 { font-size: 32px; font-weight: 900; }
         
@@ -43,9 +42,7 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            opacity: 0.7;
         }
-        .admin-btn:hover { opacity: 1; }
         
         .question-card {
             background: #f8fafc;
@@ -69,10 +66,7 @@
             display: flex;
             align-items: center;
         }
-        .option input[type="radio"] {
-            margin-left: 15px;
-            transform: scale(1.4);
-        }
+        .option input[type="radio"] { margin-left: 15px; transform: scale(1.4); }
         .submit-btn {
             background: #1e40af;
             color: white;
@@ -96,20 +90,18 @@
             <p>الصف الأول الثانوي - الشعبة</p>
         </div>
 
-        <!-- وضع الطالب -->
         <div id="studentMode" style="padding:40px;">
             <form id="quizForm"></form>
             <button onclick="submitQuiz()" class="submit-btn">إنهاء الاختبار</button>
         </div>
 
-        <!-- وضع الأستاذ (مخفي) -->
         <div id="adminMode" style="padding:40px; display:none;">
-            <h2 style="text-align:center; color:#1e40af; margin-bottom:25px;">لوحة تحكم الأستاذ</h2>
+            <h2 style="text-align:center; color:#1e40af;">لوحة تحكم الأستاذ</h2>
             <div id="adminQuestions"></div>
             <div style="text-align:center; margin-top:30px;">
-                <button onclick="addNewQuestion()" style="background:#3b82f6;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">إضافة سؤال جديد</button>
+                <button onclick="addNewQuestion()" style="background:#3b82f6;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">إضافة سؤال</button>
                 <button onclick="saveQuestions()" style="background:#16a34a;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">حفظ التعديلات</button>
-                <button onclick="toggleAdmin()" style="background:#ef4444;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">رجوع لوضع الطالب</button>
+                <button onclick="toggleAdmin()" style="background:#ef4444;color:white;padding:12px 25px;border:none;border-radius:10px;margin:5px;">رجوع</button>
             </div>
         </div>
     </div>
@@ -186,17 +178,12 @@
         }
 
         function addNewQuestion() {
-            questions.push({
-                id: questions.length + 1,
-                text: "سؤال جديد",
-                options: ["خيار 1", "خيار 2", "خيار 3"],
-                correct: "خيار 1"
-            });
+            questions.push({ id: questions.length + 1, text: "سؤال جديد", options: ["خيار1","خيار2","خيار3"], correct: "خيار1" });
             renderAdminPanel();
         }
 
         function deleteQuestion(i) {
-            if (confirm("هل تريد حذف هذا السؤال؟")) {
+            if (confirm("حذف السؤال؟")) {
                 questions.splice(i, 1);
                 questions.forEach((q, idx) => q.id = idx + 1);
                 renderAdminPanel();
@@ -205,11 +192,11 @@
 
         function saveQuestions() {
             localStorage.setItem('kafayatQuiz', JSON.stringify(questions));
-            alert("✅ تم حفظ التعديلات بنجاح!");
+            alert("✅ تم حفظ التعديلات!");
         }
 
         function submitQuiz() {
-            alert("تم إنهاء الاختبار بنجاح!");
+            alert("تم إنهاء الاختبار!");
         }
 
         window.onload = renderQuestions;
