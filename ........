@@ -51,7 +51,12 @@
             margin-bottom: 25px;
             border-radius: 15px;
         }
-        .question-text { font-size: 20px; font-weight: 700; margin-bottom: 20px; line-height: 1.6; }
+        .question-text { 
+            font-size: 20px; 
+            font-weight: 700; 
+            margin-bottom: 20px; 
+            line-height: 1.6;
+        }
         .option {
             background: white;
             border: 2px solid #e2e8f0;
@@ -183,7 +188,7 @@
     <script>
         const ADMIN_PASSWORD = "554466";
 
-        // الأسئلة مضمنة دائمًا (ما تعتمد على localStorage فقط)
+        // الأسئلة مضمنة داخل الكود (لن تختفي في أي جهاز)
         let questions = [
             { id: 1, text: "المضاف يكون ........", options: ["نكرة", "معرفة", "نكرة أو معرفة"], correct: "نكرة" },
             { id: 2, text: "الجملة التي كتبت بشكل صحيح:", options: ["أ- استفدت من ذو الخبرة.", "ب- استفدت من ذا الخبرة.", "ج- استفدت من ذي الخبرة."], correct: "ج- استفدت من ذي الخبرة." },
@@ -233,7 +238,7 @@
         function renderQuestions() {
             const form = document.getElementById('quizForm');
             form.innerHTML = '';
-            questions.forEach((q) => {
+            questions.forEach(q => {
                 let html = `<div class="question-card">
                     <div class="question-text">${q.id}. ${q.text}</div>`;
                 q.options.forEach(opt => {
