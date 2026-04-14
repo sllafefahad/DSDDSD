@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختبار الكفايات اللغوية 1-2</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap');
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: linear-gradient(135deg, #0a1428, #1e3a8a, #312e81);
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: linear-gradient(145deg, #ffffff, #f0f4ff);
+            border-radius: 30px;
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            border: 12px solid #d4af37;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a, #3b82f6, #60a5fa);
+            padding: 50px 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '★ ★ ★';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            font-size: 40px;
+            color: rgba(255,255,255,0.2);
+            animation: stars 10s linear infinite;
+        }
+        
+        .header h1 {
+            font-size: 38px;
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            letter-spacing: 2px;
+        }
+        
+        .header p {
+            font-size: 21px;
+            color: #facc15;
+            margin-top: 12px;
+            font-weight: 700;
+        }
+        
+        .admin-btn {
+            position: absolute;
+            top: 25px;
+            left: 25px;
+            background: #facc15;
+            color: #1e3a8a;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 16px;
+            z-index: 100;
+        }
+        
+        .quiz-container { padding: 50px 40px; }
+        
+        .question {
+            background: white;
+            margin-bottom: 32px;
+            padding: 32px;
+            border-radius: 20px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.1);
+            border-right: 8px solid #1e40af;
+            transition: transform 0.3s;
+        }
+        
+        .question:hover { transform: translateY(-8px); }
+        
+        .question-number {
+            background: linear-gradient(#1e40af, #3b82f6);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            font-weight: 900;
+            margin-bottom: 18px;
+        }
+        
+        .question-text {
+            font-size: 22px;
+            font-weight: 700;
+            line-height: 1.8;
+            color: #1e2937;
+            margin-bottom: 25px;
+        }
+        
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 18px 22px;
+            background: #f8fafc;
+            border: 3px solid #e2e8f0;
+            border-radius: 15px;
+            margin-bottom: 14px;
+            font-size: 19px;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            border-color: #60a5fa;
+            background: #eff6ff;
+            transform: scale(1.02);
+        }
+        
+        .option input[type="radio"] {
+            margin-left: 18px;
+            transform: scale(1.5);
+            accent-color: #1e40af;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa);
+            color: white;
+            border: none;
+            padding: 22px 80px;
+            font-size: 26px;
+            font-weight: 900;
+            border-radius: 20px;
+            cursor: pointer;
+            display: block;
+            margin: 50px auto 0;
+            box-shadow: 0 15px 40px rgba(30, 64, 175, 0.5);
+        }
+        
+        /* Results */
+        .results { display: none; padding: 50px 40px; }
+        
+        .score-card {
+            text-align: center;
+            background: linear-gradient(135deg, #1e40af, #60a5fa);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 25px;
+            margin-bottom: 45px;
+        }
+        
+        .score { font-size: 85px; font-weight: 900; margin: 15px 0; }
+        .percentage { font-size: 34px; font-weight: 700; }
+        
+        .review-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        
+        .review-table th, .review-table td {
+            padding: 20px 18px;
+            text-align: right;
+        }
+        
+        .review-table th { background: linear-gradient(#1e40af, #3b82f6); color: white; }
+        
+        .correct { background: #d1fae5 !important; color: #166534 !important; font-weight: 700; }
+        .wrong   { background: #fee2e2 !important; color: #991b1b !important; font-weight: 700; }
+        
+        .restart-btn {
+            background: linear-gradient(135deg, #166534, #4ade80);
+            color: white;
+            border: none;
+            padding: 20px 70px;
+            font-size: 24px;
+            font-weight: 900;
+            border-radius: 18px;
+            cursor: pointer;
+            margin: 40px auto 0;
+            display: block;
+        }
+        
+        /* شريط الحقوق */
+        .marquee {
+            background: linear-gradient(90deg, #1e3a8a, #3b82f6, #d4af37);
+            color: white;
+            padding: 16px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-size: 19px;
+            font-weight: 800;
+        }
+        
+        .marquee-content {
+            display: inline-block;
+            padding-left: 100%;
+            animation: marquee 28s linear infinite;
+        }
+        
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 18px;
+            background: #1e2937;
+            color: #94a3b8;
+            font-size: 15px;
+        }
+        
+        @keyframes stars {
+            0% { opacity: 0.2; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.2; }
+        }
+        
+        /* Admin Panel */
+        .admin-panel {
+            padding: 40px;
+            display: none;
+        }
+        
+        .admin-question {
+            background: #f1f5f9;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            border-right: 6px solid #3b82f6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button onclick="toggleAdminMode()" class="admin-btn" id="adminBtn">وضع الأستاذ</button>
+        
+        <div class="header">
+            <h1>اختبار الكفايات اللغوية 1-2</h1>
+            <p>الكفاية النحوية • العام الدراسي 1447 هـ</p>
+            <p>الصف الأول الثانوي - الشعبة</p>
+        </div>
+
+        <!-- وضع الطالب -->
+        <div id="quiz" class="quiz-container">
+            <form id="quizForm"></form>
+            <button onclick="submitQuiz()" class="submit-btn">إنهاء الاختبار وعرض النتيجة النهائية</button>
+        </div>
+
+        <!-- وضع الأستاذ -->
+        <div id="adminMode" class="admin-panel">
+            <h2 style="text-align:center; color:#1e40af; margin-bottom:30px;">لوحة تحكم الأستاذ</h2>
+            <div id="adminQuestions"></div>
+            <div style="text-align:center; margin-top:30px;">
+                <button onclick="addNewQuestion()" style="background:#3b82f6; color:white; padding:14px 30px; border:none; border-radius:12px; margin:0 10px; cursor:pointer;">إضافة سؤال جديد</button>
+                <button onclick="saveAllChanges()" style="background:#16a34a; color:white; padding:14px 30px; border:none; border-radius:12px; margin:0 10px; cursor:pointer;">حفظ جميع التعديلات</button>
+                <button onclick="toggleAdminMode()" style="background:#ef4444; color:white; padding:14px 30px; border:none; border-radius:12px; margin:0 10px; cursor:pointer;">العودة لوضع الطالب</button>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="results">
+            <div class="score-card">
+                <h2 style="font-size:28px;">نتيجتك الرسمية</h2>
+                <div class="score" id="score">0 / 20</div>
+                <div class="percentage" id="percentage">0%</div>
+            </div>
+
+            <h2 style="text-align:center; color:#1e40af; margin-bottom:30px; font-size:26px;">مراجعة مفصلة للإجابات</h2>
+            <table class="review-table" id="reviewTable">
+                <thead>
+                    <tr>
+                        <th>رقم</th>
+                        <th>السؤال</th>
+                        <th>إجابتك</th>
+                        <th>الإجابة الصحيحة</th>
+                    </tr>
+                </thead>
+                <tbody id="reviewBody"></tbody>
+            </table>
+
+            <button onclick="restartQuiz()" class="restart-btn">إعادة الاختبار مرة أخرى</button>
+        </div>
+
+        <div class="marquee">
+            <div class="marquee-content">
+                تم تصميم هذا الاختبار بواسطة سلاف فهد الحربي • جميع الحقوق محفوظة © 2026
+            </div>
+        </div>
+        
+        <div class="footer">
+            اختبار الكفايات اللغوية النحوية
+        </div>
+    </div>
+
+    <script>
+        let questions = JSON.parse(localStorage.getItem('kafayatQuestions')) || [
+            { id: 1, text: "المضاف يكون ........", options: ["نكرة", "معرفة", "نكرة أو معرفة"], correct: "نكرة" },
+            { id: 2, text: "الجملة التي كتبت بشكل صحيح:", options: ["أ- استفدت من ذو الخبرة.", "ب- استفدت من ذا الخبرة.", "ج- استفدت من ذي الخبرة."], correct: "ج- استفدت من ذي الخبرة." },
+            { id: 3, text: "أحمد طالب متميز. كلمة \"أحمد\" ممنوعة من الصرف لأنها ........", options: ["أ- صفة على وزن أفعل", "ب- علم يشبه الفعل", "ج- علم أعجمي"], correct: "ب- علم يشبه الفعل" },
+            { id: 4, text: "قال تعالى \"ومن يرغب عن ملة إبراهيم إلا من سفه نفسه\" إعراب \"إبراهيم\"", options: ["أ- مضاف إليه مجرور وعلامة جره الكسرة", "ب- مضاف إليه مجرور وعلامة جره الفتحة", "ج- مفعول به منصوب وعلامة نصبه الفتحة"], correct: "ب- مضاف إليه مجرور وعلامة جره الفتحة" },
+            { id: 5, text: "الجملة التي بها تركيب إضافي:", options: ["أ- لبست خاتما جديدا", "ب- لبست خاتم فضة", "ج- لبست الخاتم الفضي"], correct: "ب- لبست خاتم فضة" },
+            { id: 6, text: "أتصدق ابتغاء الأجر . كلمة (ابتغاء)", options: ["أ- مفعول لأجله", "ب- حال", "ج- تمييز"], correct: "أ- مفعول لأجله" },
+            { id: 7, text: "قال تعالى \"وإذا حييتم بتحية فحيوا بأحسن منها أو ردوها\" كلمة بأحسن", options: ["أ- وصف على وزن أفعل", "ب- على وزن فعل", "ج- منتهى الجموع"], correct: "أ- وصف على وزن أفعل" },
+            { id: 8, text: "المفاعيل هي متممات لمعنى الجملة ........", options: ["أ- الاسمية", "ب- الفعلية", "ج- المنفية"], correct: "ب- الفعلية" },
+            { id: 9, text: "المفعول ........", options: ["أ- منصوب", "ب- مرفوع", "ج- مجرور"], correct: "أ- منصوب" },
+            { id: 10, text: "سجد المؤمن سجدتين . (سجدتين) مفعول مطلق :", options: ["أ- مبين للنوع", "ب- مبين للعدد", "ج- مؤكد للفعل"], correct: "ب- مبين للعدد" },
+            { id: 11, text: "كافأت الشركة العَامِلاتِ", options: ["أ- العاملات", "ب- العاملات", "ج- العَامِلاتِ"], correct: "ج- العَامِلاتِ" },
+            { id: 12, text: "اسم منصوب يُذكر لبيان زمان أو مكان حدوث الفعل.", options: ["أ- المفعول فيه", "ب- المفعول به", "ج- المفعول المطلق"], correct: "أ- المفعول فيه" },
+            { id: 13, text: "\"واشتغل الرأس شيبا\" كلمة (شيبا)", options: ["أ- مفعول به", "ب- حال", "ج- تمييز"], correct: "ج- تمييز" },
+            { id: 14, text: "رجع الجنود منتصرين . كلمة (منتصرين)", options: ["أ- مفعول به", "ب- حال", "ج- تمييز"], correct: "ب- حال" },
+            { id: 15, text: "\"صحبني طامعا في مالي\" ما تحته على الترتيب", options: ["أ- حال - مفعول لأجله", "ب- مفعول لأجله - حال", "ج- مفعول مطلق - تمييز"], correct: "ب- مفعول لأجله - حال" },
+            { id: 16, text: "التركيب الإضافي هو الذي يمكن وضع بين طرفيه أحد الحرفين ........", options: ["أ- عن - على", "ب- في - إلى", "ج- من - لـ"], correct: "ج- من - لـ" },
+            { id: 17, text: "الجملة التي كتبت بشكل صحيح", options: ["أ- معلومون القرآن مأجورون", "ب- معلمي القرآن مأجورون", "ج- معلمو القرآن مأجورون"], correct: "ج- معلمو القرآن مأجورون" },
+            { id: 18, text: "صلينا في مساجد المدينة . إعراب كلمة (مساجد)", options: ["أ- الفتحة الظاهرة على آخره", "ب- الكسرة الظاهرة على آخره", "ج- الياء"], correct: "ب- الكسرة الظاهرة على آخره" },
+            { id: 19, text: "يُدافع الجندي عن وطنه دفاع الأبطال. الجملة مثال على مفعول مطلق", options: ["أ- مؤكد للفعل", "ب- مبين للنوع", "ج- مبين للعدد"], correct: "ب- مبين للنوع" },
+            { id: 20, text: "قضينا في ينبع أياما جميلة . كلمة \"ينبع\" اسم مجرور وعلامة جره ........", options: ["أ- الكسرة", "ب- الفتحة", "ج- الياء"], correct: "ج- الياء" }
+        ];
+
+        let userAnswers = new Array(questions.length).fill(null);
+        let isAdminMode = false;
+        const ADMIN_PASSWORD = "554466";   // كلمة المرور الجديدة
+
+        function renderQuestions() {
+            const form = document.getElementById('quizForm');
+            form.innerHTML = '';
+            questions.forEach((q, index) => {
+                const qDiv = document.createElement('div');
+                qDiv.className = 'question';
+                qDiv.innerHTML = `
+                    <div class="question-number">${q.id}</div>
+                    <div class="question-text">${q.text}</div>
+                    <div class="options">
+                        ${q.options.map(opt => `
+                            <label class="option">
+                                <input type="radio" name="q${q.id}" value="${opt}" onchange="saveAnswer(${index}, '${opt}')">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                form.appendChild(qDiv);
+            });
+        }
+
+        function saveAnswer(index, answer) {
+            userAnswers[index] = answer;
+        }
+
+        function toggleAdminMode() {
+            if (!isAdminMode) {
+                const pass = prompt("أدخل كلمة المرور لوضع الأستاذ:");
+                if (pass !== ADMIN_PASSWORD) {
+                    alert("كلمة المرور خاطئة! حاول مرة أخرى.");
+                    return;
+                }
+            }
+            
+            isAdminMode = !isAdminMode;
+            document.getElementById('quiz').style.display = isAdminMode ? 'none' : 'block';
+            document.getElementById('results').style.display = 'none';
+            document.getElementById('adminMode').style.display = isAdminMode ? 'block' : 'none';
+            document.getElementById('adminBtn').textContent = isAdminMode ? 'وضع الطالب' : 'وضع الأستاذ';
+            
+            if (isAdminMode) renderAdminPanel();
+        }
+
+        function renderAdminPanel() {
+            const container = document.getElementById('adminQuestions');
+            container.innerHTML = '';
+            
+            questions.forEach((q, i) => {
+                let html = `
+                <div class="admin-question">
+                    <strong>سؤال ${q.id}</strong><br>
+                    <textarea rows="2" onchange="questions[${i}].text = this.value">${q.text}</textarea>
+                    <div style="margin:15px 0 8px;">الخيارات:</div>`;
+                
+                q.options.forEach((opt, j) => {
+                    html += `<input type="text" value="${opt}" onchange="questions[${i}].options[${j}] = this.value">`;
+                });
+                
+                html += `
+                    <div style="margin:15px 0 8px;">الإجابة الصحيحة:</div>
+                    <input type="text" value="${q.correct}" onchange="questions[${i}].correct = this.value">
+                    <button onclick="deleteQuestion(${i})" style="background:#ef4444;color:white;padding:8px 15px;border:none;border-radius:8px;margin-top:10px;">حذف السؤال</button>
+                </div>`;
+                container.innerHTML += html;
+            });
+        }
+
+        function addNewQuestion() {
+            questions.push({
+                id: questions.length + 1,
+                text: "اكتب نص السؤال الجديد هنا",
+                options: ["خيار 1", "خيار 2", "خيار 3", "خيار 4"],
+                correct: "خيار 1"
+            });
+            renderAdminPanel();
+        }
+
+        function deleteQuestion(index) {
+            if (confirm("هل أنت متأكد من حذف هذا السؤال؟")) {
+                questions.splice(index, 1);
+                questions.forEach((q, idx) => q.id = idx + 1);
+                renderAdminPanel();
+            }
+        }
+
+        function saveAllChanges() {
+            localStorage.setItem('kafayatQuestions', JSON.stringify(questions));
+            alert("✅ تم حفظ جميع التعديلات بنجاح!");
+        }
+
+        function submitQuiz() {
+            let score = 0;
+            const reviewBody = document.getElementById('reviewBody');
+            reviewBody.innerHTML = '';
+
+            questions.forEach((q, i) => {
+                const userAns = userAnswers[i];
+                const isCorrect = userAns === q.correct;
+                if (isCorrect) score++;
+
+                const row = document.createElement('tr');
+                row.className = isCorrect ? 'correct' : 'wrong';
+                row.innerHTML = `
+                    <td><strong>${q.id}</strong></td>
+                    <td>${q.text}</td>
+                    <td>${userAns || '<span style="color:#888">لم يُجب</span>'}</td>
+                    <td><strong>${q.correct}</strong></td>
+                `;
+                reviewBody.appendChild(row);
+            });
+
+            const perc = Math.round((score / 20) * 100);
+            document.getElementById('score').innerHTML = `${score} <span style="font-size:32px;">/ 20</span>`;
+            document.getElementById('percentage').textContent = `${perc}%`;
+
+            document.getElementById('quiz').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+        }
+
+        function restartQuiz() {
+            userAnswers = new Array(questions.length).fill(null);
+            document.getElementById('quiz').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
+            renderQuestions();
+        }
+
+        window.onload = () => {
+            renderQuestions();
+        };
+    </script>
+</body>
+</html>
